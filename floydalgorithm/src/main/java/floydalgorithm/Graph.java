@@ -7,23 +7,24 @@ public class Graph {
     private ArrayList<ArrayList<Integer>> adyacencia;
     private ArrayList<String> nodos;
 
-    public Graph() {
-        this.adyacencia = new ArrayList<>();
-        this.nodos = new ArrayList<>();
+    public Graph(ArrayList<String> nodos, ArrayList<ArrayList<Integer>> adyacencia) {
+        this.adyacencia = adyacencia;
+        this.nodos = nodos;
     }
 
     /**
      * @param name
      * @param weights Lista de pesos con todos los otros nodos. Infinito se
-     * representa por -1, el grafo no acepta pesos negativos.
+     *                representa por -1, el grafo no acepta pesos negativos.
      */
     public void addNode(String name, ArrayList<Integer> weights) throws RuntimeException {
         if (nodos.contains(name)) {
             throw new RuntimeException("El nodo a crear ya existe en el grafo.");
         }
-        for (Integer num : weights){
-            if (num < 0 && num != -1){
-                throw new RuntimeException("El grafo no acepta numeros negativos (exceptuando -1 para representar infinito).");
+        for (Integer num : weights) {
+            if (num < 0 && num != -1) {
+                throw new RuntimeException(
+                        "El grafo no acepta numeros negativos (exceptuando -1 para representar infinito).");
             }
         }
         nodos.add(name);
