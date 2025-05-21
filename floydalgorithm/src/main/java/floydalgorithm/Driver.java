@@ -16,15 +16,15 @@ import java.util.Map;
 public class Driver {
 
     public static void main(String[] args) {
-        HashMap<String, ArrayList<Integer>> data;
+        HashMap<String, ArrayList<Double>> data;
         try {
-            data = (HashMap<String, ArrayList<Integer>>) readFile("matriz.txt");
+            data = (HashMap<String, ArrayList<Double>>) readFile("matriz.txt");
         } catch (IOException e) {
             throw new RuntimeException("El archivo no se pudo leer exitosamente, pruebe de nuevo.");
         }
 
         ArrayList<String> nodos = new ArrayList<>();
-        ArrayList<ArrayList<Integer>> adyacencia = new ArrayList<>();
+        ArrayList<ArrayList<Double>> adyacencia = new ArrayList<>();
 
         for (String n : data.keySet()) {
             nodos.add(n);
@@ -33,53 +33,31 @@ public class Driver {
 
         Graph g = new Graph(nodos, adyacencia);
 
-        HashMap<ArrayList<ArrayList<String>>, ArrayList<ArrayList<Integer>>> shortest = (HashMap) floydAlgorithm(g);
+        Resultado shortest = g.floydAlgorithm(g);
 
-    }
-
-    public static Map<ArrayList<ArrayList<Integer>>, ArrayList<ArrayList<String>>> floydAlgorithm(Graph g) {
-        ArrayList<String> graphNodes = g.getNodos();
-        ArrayList<ArrayList<Integer>> graphMatrix = g.getAdyacencia();
-
-        // Crear matriz de letras
-        byte diagonalIndex = 0;
-        ArrayList<ArrayList<String>> letterMatrix = new ArrayList<>();
-        for (int i = 0; i < graphMatrix.size(); i++) {
-            ArrayList<String> column = new ArrayList<>();
-            letterMatrix.add(column);
-            for (int j = 0; j < graphNodes.size(); j++) {
-                if (j != diagonalIndex) {
-                    column.add(graphNodes.get(j));
-                } else {
-                    column.add("-");
-                }
-            }
-            diagonalIndex++;
+        System.out.println("El resultado de correr el algorítmo de Floyd en el grafo ingresado es el siguiente: ");
+        System.out.println("\n- Matriz de caminos: \n");
+        for (ArrayList<String> s : shortest.getLetterMatrix()) {
+            System.out.println("\t" + s);
         }
 
-        for (ArrayList<Integer> a : graphMatrix) {
-            System.out.println(a);
+        System.out.println("\n- Matriz de distancias: \n");
+        for (ArrayList<Double> i : shortest.getDistMatrix()) {
+            System.out.println("\t" + i);
         }
-
-        // Crear matriz con los datos
-        ArrayList<ArrayList<Integer>> distMatrix = g.getAdyacencia();
-
-        Map<ArrayList<ArrayList<String>>, ArrayList<ArrayList<Integer>>> result = new HashMap<>();
-        result.put(letterMatrix, distMatrix);
-        return (HashMap) result;
     }
 
-    public static Map<String, ArrayList<Integer>> readFile(String fileName) throws IOException {
-        Map<String, ArrayList<Integer>> node = new HashMap<>();
+    public static Map<String, ArrayList<Double>> readFile(String fileName) throws IOException {
+        Map<String, ArrayList<Double>> node = new HashMap<>();
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String line;
         while ((line = br.readLine()) != null) {
             String[] split = line.split(";");
             String name = split[0];
             String[] weightsString = split[1].split(",");
-            ArrayList<Integer> weights = new ArrayList<>();
+            ArrayList<Double> weights = new ArrayList<>();
             for (String s : weightsString) {
-                weights.add(Integer.parseInt(s));
+                weights.add((Double.parseDouble(s) == -1) ? Double.POSITIVE_INFINITY : Double.parseDouble(s));
             }
             node.put(name, weights);
         }
