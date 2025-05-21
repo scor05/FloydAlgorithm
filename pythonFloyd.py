@@ -1,4 +1,5 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 import math
 
 def read_graph_from_file(filename):
@@ -33,6 +34,9 @@ def analisisFloyd(filename):
 
     # Algorítmo ya implementado de networkX, retorna un doble diccionario con las distancias mínimas tal que dist[source][target] = distancia mínima.
     dist = nx.floyd_warshall(G, weight="weight")
+    
+    nx.draw(G, node_size = 1000, with_labels = True, arrows = True)
+    plt.show()
 
     print("\n- Matriz de distancias mínimas:")
     for src in nodes:
