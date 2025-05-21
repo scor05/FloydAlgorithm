@@ -7,6 +7,11 @@ public class Graph {
     private ArrayList<ArrayList<Double>> adyacencia;
     private ArrayList<String> nodos;
 
+    public Graph() {
+        this.adyacencia = new ArrayList<>();
+        this.nodos = new ArrayList<>();
+    }
+
     public Graph(ArrayList<String> nodos, ArrayList<ArrayList<Double>> adyacencia) {
         this.adyacencia = adyacencia;
         this.nodos = nodos;
