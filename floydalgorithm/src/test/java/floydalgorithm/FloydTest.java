@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
-public class AppTest {
+public class FloydTest {
 
     @Test
     public void addNodeTest() {
