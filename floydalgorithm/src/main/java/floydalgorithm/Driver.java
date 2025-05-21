@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -45,10 +47,23 @@ public class Driver {
         for (ArrayList<Double> i : shortest.getDistMatrix()) {
             System.out.println("\t" + i);
         }
+
+        // Centro del grafo -> nodo con menor eccentricidad (magnitud de ruta más corta "más larga")
+        HashMap<String, Double> shortestRoutes = new HashMap<>();
+        int nodeIndex = 0;
+        for (ArrayList<Double> row : shortest.getDistMatrix()){
+            Collections.sort(row);
+            Double largest = row.get(row.size() - 1);
+            shortestRoutes.put(g.getNodos().get(nodeIndex), largest);
+            nodeIndex++;
+        }
+
+        String center = Collections.min(shortestRoutes.entrySet(), Map.Entry.comparingByValue()).getKey();
+        System.out.println("\n - Centro del grafo: " + center);
     }
 
     public static Map<String, ArrayList<Double>> readFile(String fileName) throws IOException {
-        Map<String, ArrayList<Double>> node = new HashMap<>();
+        Map<String, ArrayList<Double>> node = new LinkedHashMap<>();
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String line;
         while ((line = br.readLine()) != null) {
